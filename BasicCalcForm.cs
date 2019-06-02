@@ -13,11 +13,13 @@ namespace CalcApp
     public partial class BasicCalcForm : Form
     {
         CalcEngine calcEngine;
+        FormatUtils formatUtils;
 
         public BasicCalcForm()
         {
             InitializeComponent();
             calcEngine = new CalcEngine();
+            formatUtils = new FormatUtils();
         }
 
 
@@ -108,7 +110,7 @@ namespace CalcApp
                         return;
                     }
 
-                    ShowMessage();
+                    formatUtils.ShowMessage();
                     return;
                 }
 
@@ -193,7 +195,7 @@ namespace CalcApp
             //MaxInput Check
             if (IsMaxInput(button.Name))
             {
-                ShowMessage();
+                formatUtils.ShowMessage();
                 return;
             }
 
@@ -261,42 +263,11 @@ namespace CalcApp
             UpdateResult();
         }
 
-
-        /// <summary>
-        /// 数字が入力されると、10桁が超過するかをチェックして
-        /// メッセージ表示
-        /// </summary>
-        /// <param name="btnName">Button Name</param>
-        private bool IsMaxInput(string btnName)
-        {
-            bool isMax = false;
-
-            if (calcEngine.IsMaxInput())
-            {
-                isMax = true;
-            }
-            else if(calcEngine.countDigit == 9 && btnName.Equals("btn00"))
-            {
-                isMax = true;
-            }
-
-            return isMax;
-        }
-
-
-        /// <summary>
-        /// 数字の10桁が超過するとき出力
-        /// </summary>
-        private void ShowMessage()
-        {
-            MessageBox.Show("10桁までしか入力できません");
-        }
-
  
         // TxtResult, Label Update Function
         private void UpdateResult()
         {
-            txtResult.Text = ResultFormat(calcEngine.GetResult());
+            txtResult.Text = formatUtils.ResultFormat(calcEngine.GetResult());
 
             UpdateLabelText();
         }
@@ -330,72 +301,25 @@ namespace CalcApp
 
 
         /// <summary>
-        /// Update 2019/05/15
-        /// Input Commas
-        /// 100000.0000 -> 100,000.0000
+        /// 数字が入力されると、10桁が超過するかをチェックして
+        /// メッセージ表示
         /// </summary>
-        private string ResultFormat(string getResult)
+        /// <param name="btnName">Button Name</param>
+        private bool IsMaxInput(string btnName)
         {
-            if (String.IsNullOrEmpty(getResult))
+            bool isMax = false;
+
+            if (calcEngine.IsMaxInput())
             {
-                return getResult = "0";
+                isMax = true;
+            }
+            else if (calcEngine.countDigit == 9 && btnName.Equals("btn00"))
+            {
+                isMax = true;
             }
 
-            if (getResult.Length > 2)
-            {
-
-                /// <summary>
-                /// コンマの表示される桁を設定
-                /// </summary>
-                int digit = 3;
-
-                /// <summary>
-                /// 定数の長さ
-                /// Length of Integer
-                /// </summary>
-                int integerLength;
-
-                if (getResult.IndexOf(".") != -1)
-                {
-                    integerLength = getResult.IndexOf(".");
-                }
-                else
-                {
-                    integerLength = getResult.Length;
-                }
-
-                /// <summary>
-                /// 表示されるコンマの数計算
-                /// Counting Commas
-                /// </summary>
-                int commaCount = integerLength / digit;
-
-                if (integerLength % digit == 0)
-                {
-                    commaCount--;
-                }
-                else if (integerLength % digit <= 1 && getResult.IndexOf("-") == 0)
-                {
-                    commaCount--;
-                }
-
-                if (commaCount > 0)
-                {
-                    int index = integerLength - 3;
-
-                    while (commaCount>0)
-                    {
-                        getResult = getResult.Insert(index, ",");
-                        index -= 3;
-                        commaCount--;
-                    }
-                }
-            }
-
-            return getResult;
-
-        }//ResultFormat()
-
+            return isMax;
+        }
 
     }
 }

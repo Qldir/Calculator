@@ -53,6 +53,7 @@
       <DependentUpon>BasicCalcForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CalcEngine.cs" />
+    <Compile Include="FormatUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BasicCalcForm.resx">

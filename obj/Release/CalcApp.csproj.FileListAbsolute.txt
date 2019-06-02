@@ -1,0 +1,9 @@
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\bin\Release\CalcApp.exe.config
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\bin\Release\CalcApp.exe
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\bin\Release\CalcApp.pdb
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.BasicCalcForm.resources
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.Properties.Resources.resources
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.csproj.GenerateResource.cache
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.csproj.CoreCompileInputs.cache
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.exe
+E:\CSharp_Project\CalcApp\CalcApp\CalcApp\obj\Release\CalcApp.pdb

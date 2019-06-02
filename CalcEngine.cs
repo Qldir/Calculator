@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace CalcApp
 {
-
-
     public class CalcEngine
     {
         #region fields
@@ -70,11 +68,16 @@ namespace CalcApp
 
         public void Clear()
         {
+            if (isError)
+            {
+                isError = false;
+                return;
+            }
+
             input = String.Empty;
             sign = "+";
             isDecimal = false;
             isWait = false;
-            isError = false;
             countDigit = 0;
         }
 
@@ -101,7 +104,6 @@ namespace CalcApp
             }
 
             input += "" + numValue;
-
         }
 
 
@@ -210,6 +212,10 @@ namespace CalcApp
         }
 
 
+        /// <summary>
+        /// 計算する値があるかチェックして
+        /// 無ければ演算が可能に初期化するメソッド
+        /// </summary>
         private bool IsPrepareCalculate(string operatorType)
         {
             if (isWait)
@@ -295,10 +301,13 @@ namespace CalcApp
             int totalLength;
             int deleteLength;
 
-            //  numA : 1
-            //  numB : 0
+            /// <summary>
+            /// 桁が削除される対象
+            /// 0 : input
+            /// 1 : lastInput
+            /// Defalut : input
+            /// </summary>
             int deleteTarget = 0;
-
 
             integerLength =
                 CheckIntegerLength(lastInput) >= CheckIntegerLength(input)
@@ -316,22 +325,27 @@ namespace CalcApp
 
             totalLength = integerLength + decimalLength;
 
-            if (totalLength > 10)
+            if(totalLength <= 10)
             {
-                deleteLength = totalLength - 10;
+                return;
+            }
 
-                if (deleteTarget == 1)
-                {
-                    lastInput = lastInput.Remove(lastInput.Length - 1, 1);
-                }
-                else
-                {
-                    input = input.Remove(input.Length - 1, 1);
-                }
+            deleteLength = totalLength - 10;
+
+            if (deleteTarget == 1)
+            {
+                lastInput = lastInput.Remove(lastInput.Length - 1, 1);
+            }
+            else
+            {
+                input = input.Remove(input.Length - 1, 1);
             }
         }
 
 
+        /// <summary>
+        /// 小数点があるかチェックして整数の桁を計算
+        /// </summary>
         private int CheckIntegerLength(string number)
         {
             number = number.Replace("-", "");
@@ -346,6 +360,11 @@ namespace CalcApp
             return number.Length;
         }
 
+
+        /// <summary>
+        /// 小数点があるかチェックして小数点の桁を計算
+        /// Default : 0
+        /// </summary>
         private int CheckDecimalLength(string number)
         {
             int decimalLength = 0;
@@ -361,9 +380,6 @@ namespace CalcApp
         }
 
 
-        
-
-        //TODO: GT機能追加
         /// <summary>
         /// Equal Operation
         /// Event Method : ClickEqualButton
@@ -372,6 +388,7 @@ namespace CalcApp
         {
             lastInput = String.Empty;
             isWait = false;
+            //TODO: GT機能追加
         }
 
 
@@ -388,15 +405,14 @@ namespace CalcApp
 
             if (sign.Equals("+"))
             {
-                sign = "-";
                 input = sign + input;
+                sign = "-";
+                return;
             }
-            else
+
+            if (sign.Equals("-"))
             {
-                if (sign.Equals("-"))
-                {
-                    input = input.Remove(0, 1);
-                }
+                input = input.Remove(0, 1);
                 sign = "+";
             }
         }
@@ -420,7 +436,6 @@ namespace CalcApp
                 input = String.Empty;
                 isDecimal = false;
                 sign = "+";
-
                 return;
             }
 
@@ -455,7 +470,6 @@ namespace CalcApp
         {
             bool isMax = false;
 
-
             if (String.IsNullOrEmpty(input) || isWait || operation.Equals("="))
             {
                 return isMax;
@@ -478,12 +492,6 @@ namespace CalcApp
             }
 
             return isMax;
-        }//isMaxInput()
-
-
-        public string GetOperation()
-        {
-            return operation;
         }
 
 
@@ -519,7 +527,14 @@ namespace CalcApp
             // 小数点があるときだけ表示
             ApplyDecimalPattern();
 
+            if (input.IndexOf(".") == -1)
+            {
+                int overLength = extractNumber.Length - MaxDigit;
+                input = input.Insert(overLength, ".");
+            }
+
             lastInput = input;
+            isError = true;
 
             return input;
         }
@@ -545,6 +560,16 @@ namespace CalcApp
             {
                 input = input.Remove(input.Length - 1, 1);
             }
+        }
+
+
+        /// <summary>
+        /// 現在の入力された演算子をreturn
+        /// </summary>
+        /// <returns></returns>
+        public string GetOperation()
+        {
+            return operation;
         }
 
 
