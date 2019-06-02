@@ -1,0 +1,10 @@
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\bin\Debug\CalcApp.exe.config
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\bin\Debug\CalcApp.exe
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\bin\Debug\CalcApp.pdb
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.csprojAssemblyReference.cache
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.Properties.Resources.resources
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.csproj.GenerateResource.cache
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.csproj.CoreCompileInputs.cache
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.exe
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.pdb
+C:\Users\wonhong.chang\source\repos\CalcApp\CalcApp\obj\Debug\CalcApp.BasicCalcForm.resources
