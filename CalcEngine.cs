@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CalcApp
 {
@@ -278,6 +279,11 @@ namespace CalcApp
                 sign = "-";
             }
 
+            if(recentResult > 9999999999)
+            {
+                isError = true;
+            }
+
             operation = operatorType;
 
             input = Convert.ToString(recentResult);
@@ -532,9 +538,6 @@ namespace CalcApp
                 int overLength = extractNumber.Length - MaxDigit;
                 input = input.Insert(overLength, ".");
             }
-
-            lastInput = input;
-            isError = true;
 
             return input;
         }
