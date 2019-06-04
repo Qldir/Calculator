@@ -25,6 +25,7 @@ namespace CalcApp
         public int countDigit;           //Count of Digit
 
         public static readonly int MaxDigit = 10;     //Max Digit 10
+        public static readonly decimal MaxValue = 10000000000;      //Max Value
 
         #endregion
 
@@ -101,6 +102,11 @@ namespace CalcApp
 
             if(IsZeroValue())
             {
+                if (numValue != 0)
+                {
+                    input = input.Remove(input.Length - 1, 1);
+                    input += "" + numValue;
+                }
                 return;
             }
 
@@ -285,7 +291,7 @@ namespace CalcApp
                 sign = "-";
             }
 
-            if(recentResult >= 10000000000)
+            if(recentResult >= MaxValue)
             {
                 isError = true;
             }
@@ -522,7 +528,12 @@ namespace CalcApp
 
             int maxLength = MaxDigit;
 
-            if (sign.Equals("-") || resultNumber.IndexOf(".") != -1)
+            if (sign.Equals("-"))
+            {
+                maxLength++;
+            }
+
+            if(resultNumber.IndexOf(".") != -1)
             {
                 maxLength++;
             }
@@ -537,9 +548,14 @@ namespace CalcApp
             // 小数点があるときだけ表示
             ApplyDecimalPattern();
 
-            if (input.IndexOf(".") == -1)
+            if (isError && input.IndexOf(".") == -1)
             {
                 int overLength = extractNumber.Length - MaxDigit;
+
+                if (sign.Equals("-"))
+                {
+                    overLength++;
+                }
                 input = input.Insert(overLength, ".");
             }
 

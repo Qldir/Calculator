@@ -82,7 +82,7 @@ namespace CalcApp
         /// </summary>
         public void ShowMessage()
         {
-            MessageBox.Show("10桁までしか入力できません");
+            MessageBox.Show(CalcEngine.MaxDigit+"桁までしか入力できません");
         }
 
     }
