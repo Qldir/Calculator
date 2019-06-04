@@ -34,7 +34,7 @@
             this.btnMemRead = new System.Windows.Forms.Button();
             this.btnIncludedTax = new System.Windows.Forms.Button();
             this.btnMemAdd = new System.Windows.Forms.Button();
-            this.btnMemStore = new System.Windows.Forms.Button();
+            this.btnMemSubtract = new System.Windows.Forms.Button();
             this.btnGrandTotal = new System.Windows.Forms.Button();
             this.btnSign = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
@@ -87,6 +87,7 @@
             this.btnMemClear.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMemClear.Name = "btnMemClear";
             this.btnMemClear.UseVisualStyleBackColor = false;
+            this.btnMemClear.Click += new System.EventHandler(this.ClickMemoryButton);
             // 
             // btnMemRead
             // 
@@ -96,6 +97,7 @@
             this.btnMemRead.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMemRead.Name = "btnMemRead";
             this.btnMemRead.UseVisualStyleBackColor = false;
+            this.btnMemRead.Click += new System.EventHandler(this.ClickMemoryButton);
             // 
             // btnIncludedTax
             // 
@@ -114,15 +116,17 @@
             this.btnMemAdd.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnMemAdd.Name = "btnMemAdd";
             this.btnMemAdd.UseVisualStyleBackColor = false;
+            this.btnMemAdd.Click += new System.EventHandler(this.ClickMemoryButton);
             // 
-            // btnMemStore
+            // btnMemSubtract
             // 
-            this.btnMemStore.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.btnMemStore.FlatAppearance.BorderSize = 0;
-            resources.ApplyResources(this.btnMemStore, "btnMemStore");
-            this.btnMemStore.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnMemStore.Name = "btnMemStore";
-            this.btnMemStore.UseVisualStyleBackColor = false;
+            this.btnMemSubtract.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.btnMemSubtract.FlatAppearance.BorderSize = 0;
+            resources.ApplyResources(this.btnMemSubtract, "btnMemSubtract");
+            this.btnMemSubtract.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnMemSubtract.Name = "btnMemSubtract";
+            this.btnMemSubtract.UseVisualStyleBackColor = false;
+            this.btnMemSubtract.Click += new System.EventHandler(this.ClickMemoryButton);
             // 
             // btnGrandTotal
             // 
@@ -425,7 +429,7 @@
             this.pnlBtn.Controls.Add(this.btnGrandTotal);
             this.pnlBtn.Controls.Add(this.btnSign);
             this.pnlBtn.Controls.Add(this.btnBack);
-            this.pnlBtn.Controls.Add(this.btnMemStore);
+            this.pnlBtn.Controls.Add(this.btnMemSubtract);
             this.pnlBtn.Controls.Add(this.btnMemAdd);
             this.pnlBtn.Controls.Add(this.btnIncludedTax);
             this.pnlBtn.Controls.Add(this.btnMemRead);
@@ -474,7 +478,7 @@
         private System.Windows.Forms.Button btnMemRead;
         private System.Windows.Forms.Button btnIncludedTax;
         private System.Windows.Forms.Button btnMemAdd;
-        private System.Windows.Forms.Button btnMemStore;
+        private System.Windows.Forms.Button btnMemSubtract;
         private System.Windows.Forms.Button btnGrandTotal;
         private System.Windows.Forms.Button btnSign;
         private System.Windows.Forms.Button btnBack;

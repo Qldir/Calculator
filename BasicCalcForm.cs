@@ -155,8 +155,33 @@ namespace CalcApp
                 calcEngine.AppendNum(numValue);
                 UpdateResult();
 
+                btnEqual.Focus();
             }
         }//ClickNumButton()
+
+
+        private void ClickMemoryButton(object sender, EventArgs e)
+        {
+            Button memoryButton = sender as Button;
+
+            switch (memoryButton.Name)
+            {
+                case "btnMemClear":
+                    calcEngine.ClearMemory();
+                    break;
+                case "btnMemRead":
+                    calcEngine.ReadMemory();
+                    break;
+                case "btnMemSubtract":
+                    calcEngine.StoreMemory("-");
+                    break;
+                case "btnMemAdd":
+                    calcEngine.StoreMemory("+");
+                    break;
+            }
+
+            UpdateResult();
+        }
 
 
         /// <summary>
@@ -279,6 +304,7 @@ namespace CalcApp
         /// </summary>
         private void UpdateLabelText()
         {
+            //Operator label
             if (calcEngine.operation.Equals("="))
             {
                 lblOperator.Text = String.Empty;
@@ -288,6 +314,18 @@ namespace CalcApp
                 lblOperator.Text = calcEngine.operation;
             }
 
+            //Memory label
+            if (calcEngine.isMemory)
+            {
+                lblMemory.Text = "M";
+            }
+            else
+            {
+                lblMemory.Text = String.Empty;
+            }
+
+
+            //Error label
             if (calcEngine.isError)
             {
                 lblError.Text = "E";

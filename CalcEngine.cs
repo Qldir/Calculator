@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CalcApp
 {
@@ -15,8 +14,9 @@ namespace CalcApp
         private string input;            //Display Number
         private decimal recentResult;    //Last Displayed Number
         private string lastInput;        //Last Input Number
-        public string operation;        //Current operator
+        public string operation;         //Current operator
         private string sign;             //Sign of Number
+        private string memory;           //Numeric stored in memory
         public bool isDecimal;           //Decimal status
         public bool isWait;              //Wait for new input after a number
         public bool isError;             //Error status
@@ -39,6 +39,7 @@ namespace CalcApp
             lastInput = String.Empty;
             operation = String.Empty;
             sign = "+";
+            memory = "0";
             isDecimal = false;
             isWait = false;
             isError = false;
@@ -63,7 +64,6 @@ namespace CalcApp
             countDigit = 0;
             isError = false;
             isGrandTotal = false;
-            isMemory = false;
         }
 
 
@@ -219,7 +219,13 @@ namespace CalcApp
         /// </summary>
         private bool IsPrepareCalculate(string operatorType)
         {
-            if (isWait)
+            if (isWait && !operatorType.Equals("="))
+            {
+                operation = operatorType;
+                return false;
+            }
+
+            if (isWait && !operation.Equals("×") && !operation.Equals("÷"))
             {
                 operation = operatorType;
                 return false;
@@ -248,7 +254,7 @@ namespace CalcApp
         /// Arithmetic Operation
         /// 基本演算(+, -, *, /)を処理するメソッド
         /// </summary>
-        private void CalculateOperation(string operatorType)
+        public void CalculateOperation(string operatorType)
         {
             switch (operation)
             {
@@ -279,7 +285,7 @@ namespace CalcApp
                 sign = "-";
             }
 
-            if(recentResult > 9999999999)
+            if(recentResult >= 10000000000)
             {
                 isError = true;
             }
@@ -316,35 +322,35 @@ namespace CalcApp
             int deleteTarget = 0;
 
             integerLength =
-                CheckIntegerLength(lastInput) >= CheckIntegerLength(input)
-                ? CheckIntegerLength(lastInput) : CheckIntegerLength(input);
+                GetIntegerLength(lastInput) >= GetIntegerLength(input)
+                ? GetIntegerLength(lastInput) : GetIntegerLength(input);
 
-            if (CheckDecimalLength(lastInput) >= CheckDecimalLength(input))
+            if (GetDecimalLength(lastInput) >= GetDecimalLength(input))
             {
-                decimalLength = CheckDecimalLength(lastInput);
+                decimalLength = GetDecimalLength(lastInput);
                 deleteTarget = 1;
             }
             else
             {
-                decimalLength = CheckDecimalLength(input);
+                decimalLength = GetDecimalLength(input);
             }
 
             totalLength = integerLength + decimalLength;
 
-            if(totalLength <= 10)
+            if(totalLength <= MaxDigit)
             {
                 return;
             }
-
-            deleteLength = totalLength - 10;
+            
+            deleteLength = totalLength - MaxDigit;
 
             if (deleteTarget == 1)
             {
-                lastInput = lastInput.Remove(lastInput.Length - 1, 1);
+                lastInput = lastInput.Remove(lastInput.Length - deleteLength, deleteLength);
             }
             else
             {
-                input = input.Remove(input.Length - 1, 1);
+                input = input.Remove(input.Length - deleteLength, deleteLength);
             }
         }
 
@@ -352,7 +358,7 @@ namespace CalcApp
         /// <summary>
         /// 小数点があるかチェックして整数の桁を計算
         /// </summary>
-        private int CheckIntegerLength(string number)
+        private int GetIntegerLength(string number)
         {
             number = number.Replace("-", "");
 
@@ -371,7 +377,7 @@ namespace CalcApp
         /// 小数点があるかチェックして小数点の桁を計算
         /// Default : 0
         /// </summary>
-        private int CheckDecimalLength(string number)
+        private int GetDecimalLength(string number)
         {
             int decimalLength = 0;
 
@@ -383,18 +389,6 @@ namespace CalcApp
             }
 
             return decimalLength;
-        }
-
-
-        /// <summary>
-        /// Equal Operation
-        /// Event Method : ClickEqualButton
-        /// </summary>
-        public void Solve()
-        {
-            lastInput = String.Empty;
-            isWait = false;
-            //TODO: GT機能追加
         }
 
 
@@ -411,8 +405,8 @@ namespace CalcApp
 
             if (sign.Equals("+"))
             {
-                input = sign + input;
                 sign = "-";
+                input = sign + input;
                 return;
             }
 
@@ -431,6 +425,13 @@ namespace CalcApp
         /// </summary>
         public void RemoveDigit()
         {
+            isWait = false;
+
+            if (operation.Equals("="))
+            {
+                operation = string.Empty;
+            }
+
             if (String.IsNullOrEmpty(input))
             {
                 return;
@@ -439,9 +440,7 @@ namespace CalcApp
             //(input.Length <= 1) || (input.Length == 2 && sign.Equals("-")) || (input.Equals("0."))
             if (IsRemoveDigit())
             {
-                input = String.Empty;
-                isDecimal = false;
-                sign = "+";
+                Clear();
                 return;
             }
 
@@ -456,6 +455,11 @@ namespace CalcApp
             }
 
             input = input.Remove(input.Length - removeCount, removeCount);
+
+            if (input.Equals("-"))
+            {
+                Clear();
+            }
         }
 
 
@@ -523,7 +527,7 @@ namespace CalcApp
                 maxLength++;
             }
 
-            if (resultNumber.IndexOf(".") == 10)
+            if (resultNumber.IndexOf(".") == MaxDigit)
             {
                 maxLength--;
             }
@@ -551,25 +555,46 @@ namespace CalcApp
         {
             if(input.IndexOf(".") == -1)
             {
+                isDecimal = false;
                 return;
             }
 
-            while ((input.IndexOf(".") != -1) && (input.LastIndexOf("0") == input.Length - 1))
+            isDecimal = true;
+
+            while (input.LastIndexOf("0") == input.Length - 1)
             {
-                RemoveDigit();
+                input = input.Remove(input.Length - 1, 1);
             }
 
             if (input.IndexOf(".") == input.Length - 1)
             {
                 input = input.Remove(input.Length - 1, 1);
+                isDecimal = false;
             }
+        }
+
+
+        /// <summary>
+        /// Equal Operation
+        /// Event Method : ClickEqualButton
+        /// </summary>
+        public void Solve()
+        {
+            lastInput = String.Empty;
+            isWait = false;
+            //TODO: GT機能追加
+        }
+
+
+        public void SetOperation(string operation)
+        {
+            this.operation = operation;
         }
 
 
         /// <summary>
         /// 現在の入力された演算子をreturn
         /// </summary>
-        /// <returns></returns>
         public string GetOperation()
         {
             return operation;
@@ -583,6 +608,62 @@ namespace CalcApp
         {
             return LimitDigit(input);
         }
+
+
+        //========Memory Operation==========
+        //TODO: コード整理
+        /// <summary>
+        /// Memory Clear
+        /// </summary>
+        public void ClearMemory()
+        {
+            memory = "0";
+            isMemory = false;
+        }
+
+
+        /// <summary>
+        /// Memory Read
+        /// </summary>
+        public void ReadMemory()
+        {
+            input = memory;
+            isWait = false;
+        }
+
+
+        /// <summary>
+        /// Memory Subtract or Memory Add
+        /// </summary>
+        /// <param name="operatorType">Memory Operation Type</param>
+        public void StoreMemory(string operatorType)
+        {
+            Calculate("=");
+            Solve();
+            input = GetResult();
+
+            if (input.Equals("0"))
+            {
+                return;
+            }
+
+            string storeValue = input;
+
+            lastInput = memory;
+            //set operation
+            operation = operatorType;
+            CalculateOperation("=");
+            Solve();
+
+            if (!isError)
+            {
+                memory = GetResult();
+                isMemory = true;
+            }
+
+            input = storeValue;
+        }
+        //=================================
 
     }
 }
