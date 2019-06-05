@@ -37,7 +37,7 @@ namespace CalcApp
             /// </summary>
             int integerLength;
 
-            if (getResult.IndexOf(".") != -1)
+            if (getResult.Contains("."))
             {
                 integerLength = getResult.IndexOf(".");
             }
