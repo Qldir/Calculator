@@ -284,6 +284,7 @@
             this.btnEqual.Name = "btnEqual";
             this.btnEqual.UseVisualStyleBackColor = false;
             this.btnEqual.Click += new System.EventHandler(this.ClickEqualbutton);
+            this.btnEqual.LostFocus += new System.EventHandler(this.LostFocusEqual);
             // 
             // btnMns
             // 
@@ -461,7 +462,10 @@
             this.pnlClear.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
+            //
+            // Form Load Control
+            //
+            this.ActiveControl = btnEqual;
         }
 
         #endregion

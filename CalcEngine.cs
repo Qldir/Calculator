@@ -291,7 +291,7 @@ namespace CalcApp
                 sign = "-";
             }
 
-            if(recentResult >= MaxValue)
+            if(Math.Abs(recentResult) >= MaxValue)
             {
                 isError = true;
             }
@@ -368,7 +368,7 @@ namespace CalcApp
         {
             number = number.Replace("-", "");
 
-            bool isDecimalCheck = (number.IndexOf(".") != -1);
+            bool isDecimalCheck = (number.Contains("."));
 
             if (isDecimalCheck)
             {
@@ -387,7 +387,7 @@ namespace CalcApp
         {
             int decimalLength = 0;
 
-            bool isDecimalCheck = (number.IndexOf(".") != -1);
+            bool isDecimalCheck = (number.Contains("."));
 
             if (isDecimalCheck)
             {
@@ -405,6 +405,11 @@ namespace CalcApp
         public void SwitchSign()
         {
             if (String.IsNullOrEmpty(input))
+            {
+                return;
+            }
+
+            if(input.Equals("0") && operation.Equals("="))
             {
                 return;
             }
@@ -533,7 +538,7 @@ namespace CalcApp
                 maxLength++;
             }
 
-            if(resultNumber.IndexOf(".") != -1)
+            if(resultNumber.Contains("."))
             {
                 maxLength++;
             }
@@ -548,7 +553,7 @@ namespace CalcApp
             // 小数点があるときだけ表示
             ApplyDecimalPattern();
 
-            if (isError && input.IndexOf(".") == -1)
+            if (isError)
             {
                 int overLength = extractNumber.Length - MaxDigit;
 
@@ -569,7 +574,7 @@ namespace CalcApp
         /// </summary>
         private void ApplyDecimalPattern()
         {
-            if(input.IndexOf(".") == -1)
+            if (!input.Contains("."))
             {
                 isDecimal = false;
                 return;

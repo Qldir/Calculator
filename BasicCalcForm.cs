@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,13 +22,11 @@ namespace CalcApp
             calcEngine = new CalcEngine();
             formatUtils = new FormatUtils();
         }
-
+        
 
         //Key Pressed Event
         private void GetKeyPress(object sender, KeyPressEventArgs e)
         {
-            btnEqual.Focus();
-
             switch (e.KeyChar.ToString())
             {
                 case "0":
@@ -154,8 +153,6 @@ namespace CalcApp
 
                 calcEngine.AppendNum(numValue);
                 UpdateResult();
-
-                btnEqual.Focus();
             }
         }//ClickNumButton()
 
@@ -264,6 +261,7 @@ namespace CalcApp
             pnlBtn.Enabled = true;
             calcEngine.ClearAll();
             UpdateResult();
+            btnEqual.Focus();
         }
 
         /// <summary>
@@ -286,6 +284,7 @@ namespace CalcApp
             }
 
             UpdateResult();
+            btnEqual.Focus();
         }
 
  
@@ -359,5 +358,10 @@ namespace CalcApp
             return isMax;
         }
 
+
+        private void LostFocusEqual(object sender, EventArgs e)
+        {
+            btnEqual.Focus();
+        }
     }
 }
